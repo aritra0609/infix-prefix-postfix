@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#define SIZE 100
+char *stack[SIZE];
+int top = -1;
+void reverse(char *s)
+{
+    int size=strlen(s)-1;
+    int k;
+    char temp;
+    for(k=0;k<strlen(s)/2;k++){
+        temp=s[k];
+        s[k]=s[size];
+        s[size--]=temp;
+    }        
+}
+
+void push(char* str)
+{
+    stack[++top]=(char*)malloc(SIZE*sizeof(char));
+    strcpy(stack[top],str);
+}
+
+void pop(char* res)
+{
+    strcpy(res,stack[top--]);
+    
+}
+void main()
+{
+    char prefix[SIZE],ch,op1[SIZE],op2[SIZE];
+    int i = 0;
+    printf("\nPrefix Expression :");
+    scanf("%s", prefix);
+    reverse(prefix);
+    while ((ch = prefix[i++]) != '\0')
+    {
+        if (isalpha(ch))
+        {
+            char buffer[]={ch,'\0'};
+            push(buffer);
+        }
+        else
+        {
+            char buffer[]={ch,'\0'};
+            char buffer1[SIZE]={'(','\0'};
+            char buffer2[SIZE]={')','\0'};
+            pop(op1);
+            pop(op2);
+            strcat(buffer1,op1);
+            strcat(buffer1,buffer);
+            strcat(buffer1,op2);
+            strcat(buffer1,buffer2);
+            push(buffer1);
+        }
+    }
+    printf("\n Infix expression: %s\n",stack[top]);
+}
+
